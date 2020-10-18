@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Forum.Data.Migrations
+namespace ForumProject.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {
