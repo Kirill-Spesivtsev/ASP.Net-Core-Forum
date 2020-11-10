@@ -16,9 +16,10 @@ namespace ForumProject.Controllers
         private readonly IForum _forumService;
         private readonly IPost _postService;
 
-        public ForumController(IForum forumService)
+        public ForumController(IForum forumService, IPost postService)
         {
             _forumService = forumService;
+            _postService = postService;
         }
 
         public IActionResult Index()
@@ -26,26 +27,29 @@ namespace ForumProject.Controllers
             var forums = _forumService.GetAll().Select(forum => new ForumListingModel {
                 Id = forum.Id,
                 Name = forum.Title,
-                Description = forum.Description
+                Description = forum.Description,
+                ImageUrl = forum.ImageUrl
             });
-
+            
             var model = new ForumIndexModel
             {
                 ForumList = forums
             };
+            
             return View(model);
         }
 
         public IActionResult Topic(int id) 
         {
             var forum = _forumService.GetById(id);
-            var posts = _postService.GetPostsByForum(id);
+            var posts = forum.Posts;
 
             var postListings = posts.Select(post => new PostListingModel
             {
                 Id = post.Id,
                 AuthorId = post.User.Id,
                 AuthorRating = post.User.Rating,
+                AuthorName = post.User.UserName,
                 Title = post.Title,
                 PostRating = post.Rating,
                 DatePosted = post.Created.ToString(),
@@ -53,12 +57,30 @@ namespace ForumProject.Controllers
                 Forum = BuildForumListing(post)
             });
 
-            return View();
+            var model = new ForumTopicModel
+            {
+                Posts = postListings,
+                Forum = BuildForumListing(forum)
+            };
+
+            return View(model);
         }
 
         private ForumListingModel BuildForumListing(Post post)
         {
-            throw new NotImplementedException();
+            var forum = post.Forum;
+            return BuildForumListing(forum);
+        }
+
+        private ForumListingModel BuildForumListing(Forum forum)
+        {
+            return new ForumListingModel
+            {
+                Id = forum.Id,
+                Name = forum.Title,
+                Description = forum.Description,
+                ImageUrl = forum.ImageUrl
+            };
         }
     }
 }
