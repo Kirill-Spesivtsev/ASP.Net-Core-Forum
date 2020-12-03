@@ -65,8 +65,15 @@ namespace ForumProject.Controllers
 
             return View(model);
         }
+        /*
+        [HttpPost]
+        public IActionResult Search(int id, string searchQuery)
+        { 
+            
+        }
+        */
 
-        private ForumListingModel BuildForumListing(Post post)
+            private ForumListingModel BuildForumListing(Post post)
         {
             var forum = post.Forum;
             return BuildForumListing(forum);

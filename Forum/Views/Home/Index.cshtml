@@ -2,12 +2,12 @@
 
 <div class="container body-content">
     <div class="row frontPageSplash">
-        <div class="col-md-6 frontPageLearn">
+        <div class="col-md-6 frontPageSplashTop ">
             <div class="frontPageHeading">Share your knowlenge</div>
             <p class="frontPageSubHeading">Try our new forum</p>
             <div>
                 <form asp-controller="Search" asp-action="Search" method="post">
-                    <input asp-for="SearchQuery" type="text" class="homeSearch" placeholder="Search..." />
+                    <input asp-for="SearchQuery" type="text" class="homeSearch" autocomplete="off" placeholder="Search..." />
                 </form>
             </div>
         </div>
@@ -21,13 +21,15 @@
             <tbody>
                 @foreach(var post in Model.Latestposts) 
                 {
-                    <tr>
+                    <tr data-href="">
                         <td>
                             <div class="forumLogo" 
-                                 style="background-image: url(@post.Forum.ImageUrl); background-size : 100"/>
+                                 style="background-image: url(@post.Forum.ImageUrl);">
+                            </div>
+                            
                             <div class="postTitle">
                                 <a asp-controller="Post" asp-action="Index" asp-route-id="@post.Id">
-                                    @post.Title    
+                                    @post.Title
                                 </a>
                             </div>
                             <div class="postSubtitle">
@@ -35,8 +37,8 @@
                                 {
                                     <span>1 Reply</span>
                                 }
-                                else 
-                                { 
+                                else
+                                {
                                     @if (post.RepliesCount == 0)
                                     {
                                         <span>No Replies</span>

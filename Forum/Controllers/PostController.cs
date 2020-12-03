@@ -40,15 +40,18 @@ namespace ForumProject.Controllers
                 Created = post.Created,
                 PostContent = post.Content,
                 Replies = replies,
-                PostRating = post.Rating
+                PostRating = post.Rating,
+                ForumId = post.Forum.Id,
+                ForumName = post.Forum.Title,
+                IsAuthorAdmin = IsAuthorAdmin(post.User)
             };
 
             return View(model);
         }
 
-        public IActionResult Create(int forumId)
+        public IActionResult Create(int id)//forumId
         {
-            var forum = _forumService.GetById(forumId);
+            var forum = _forumService.GetById(id);
             var model = new NewPostModel 
             {
                 ForumName = forum.Title,
@@ -93,8 +96,16 @@ namespace ForumProject.Controllers
                 AuthorRating = reply.User.Rating,
                 Created = reply.Created,
                 ReplyContent = reply.Content,
-                ReplyRating = reply.Rating
+                ReplyRating = reply.Rating,
+                PostId = reply.Post.Id, //
+                IsAuthorAdmin = IsAuthorAdmin(reply.User)
             });
         }
+
+        private bool IsAuthorAdmin(ApplicationUser user)
+        {
+            return _userManager.GetRolesAsync(user).Result.Contains("Admin");
+        }
+
     }
 }
