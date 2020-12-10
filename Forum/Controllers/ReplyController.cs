@@ -22,9 +22,9 @@ namespace ForumProject.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(int postId)
         {
-            var post = _postService.GetById(id);
+            var post = _postService.GetPostById(postId);
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
             var model = new PostReplyModel
@@ -45,26 +45,37 @@ namespace ForumProject.Controllers
                 ForumImageUrl = post.Forum.ImageUrl
             };
 
-            return View(model);
+            return View("Create", model);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddReply(PostReplyModel model)
         {
-            var userId = _userManager.GetUserId(User);
-            var user = await _userManager.FindByIdAsync(userId);
+            if (ModelState.IsValid) 
+            {
+                var userId = _userManager.GetUserId(User);
+                var user = await _userManager.FindByIdAsync(userId);
+                var reply = BuildReply(model, user);
+                model.ForumName = reply.Post.Forum.Title;
+                await _postService.AddReply(reply);
+                return RedirectToAction("Index", "Post", new { id = model.PostId });
+            }
 
-            var reply = BuildReply(model, user);
-            await _postService.AddReply(reply);
-            //await _userService.BumpRating(userId, typeof(PostReply));
+            return await Create(model.PostId);
+        }
 
-            return RedirectToAction("Index", "Post", new { id = model.PostId });
+        [HttpPost]
+        public async Task<IActionResult> ConfirmDelete(int id)
+        {
+            var reply = _postService.GetReplyById(id);
+            await _postService.DeleteReply(id);
+            return RedirectToAction("Index", "Post", new { id = reply.Post.Id });
         }
 
         private PostReply BuildReply(PostReplyModel reply, ApplicationUser user)
         {
             var now = DateTime.Now;
-            var post = _postService.GetById(reply.PostId);
+            var post = _postService.GetPostById(reply.PostId);
 
             return new PostReply
             {

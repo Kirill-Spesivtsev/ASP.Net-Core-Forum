@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,8 @@ namespace ForumProject.Models.ReplyModels
         public int ReplyRating { get; set; }
         public bool IsAuthorAdmin { get; set; }
         public DateTime Created { get; set; }
+
+        [Required]
         public string ReplyContent { get; set; }
 
         public int PostId { get; set; }

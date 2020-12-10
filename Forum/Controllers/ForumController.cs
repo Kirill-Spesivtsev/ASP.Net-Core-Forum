@@ -73,7 +73,7 @@ namespace ForumProject.Controllers
         }
         */
 
-            private ForumListingModel BuildForumListing(Post post)
+        private ForumListingModel BuildForumListing(Post post)
         {
             var forum = post.Forum;
             return BuildForumListing(forum);

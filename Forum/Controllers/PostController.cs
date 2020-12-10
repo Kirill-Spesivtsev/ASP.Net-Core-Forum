@@ -26,7 +26,7 @@ namespace ForumProject.Controllers
 
         public IActionResult Index(int id)
         {
-            var post = _postService.GetById(id);
+            var post = _postService.GetPostById(id);
             var replies = BuildPostReplies(post.Replies);
 
             var model = new PostIndexModel
@@ -49,9 +49,10 @@ namespace ForumProject.Controllers
             return View(model);
         }
 
-        public IActionResult Create(int id)//forumId
+        
+        public IActionResult Create(int forumId)
         {
-            var forum = _forumService.GetById(id);
+            var forum = _forumService.GetById(forumId);
             var model = new NewPostModel 
             {
                 ForumName = forum.Title,
@@ -59,17 +60,33 @@ namespace ForumProject.Controllers
                 ForumImageUrl = forum.ImageUrl,
                 AuthorName = User.Identity.Name
             };
-            return View(model);
+            return View("Create", model);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddPost(NewPostModel model) 
         {
-            var userId = _userManager.GetUserId(User);
-            var user = _userManager.FindByIdAsync(userId).Result;
-            var post = BuildPost(model, user);
-            await _postService.Add(post);
-            return RedirectToAction("Index", "Post", new {id = post.Id });
+            if (ModelState.IsValid) 
+            {
+                var userId = _userManager.GetUserId(User);
+                var user = _userManager.FindByIdAsync(userId).Result;
+                var post = BuildPost(model, user);
+                model.ForumName = post.Forum.Title;
+             
+                await _postService.Add(post);
+                return RedirectToAction("Index", "Post", new {id = post.Id });
+            }
+            return Create(model.ForumId);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmDelete(int id) 
+        {
+            var post = _postService.GetPostById(id);
+            await _postService.ClearReplies(id);
+            await _postService.DeletePost(id);
+            return RedirectToAction("Index", "Forum", new { id = post.Forum.Id });
         }
 
         private Post BuildPost(NewPostModel model, ApplicationUser user)
@@ -87,7 +104,7 @@ namespace ForumProject.Controllers
 
         private IEnumerable<PostReplyModel> BuildPostReplies(IEnumerable<Models.PostReply> replies)
         {
-            return replies.Select(reply => new PostReplyModel
+            return replies.OrderByDescending(reply => reply.Created).Select(reply => new PostReplyModel
             {
                 Id = reply.Id,
                 AuthorName = reply.User.UserName,

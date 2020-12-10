@@ -109,6 +109,11 @@ body {
     background-color: aliceblue;
 }
 
+#formBackgroundContainer {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+}
+
 /*Main Page*/
 
 .sectionHeader {
@@ -215,7 +220,7 @@ body {
     padding: 3px 5px 2px 12px;
     margin: 8px;
     background-color: #999999;
-    width: 30%;
+    width: 60%;
     transition: ease 0.2s;
     border: none;
 }
@@ -262,18 +267,19 @@ body {
     height: 80px;
     width: 80px;
     background-size: 100%;
-    background-repeat:no-repeat;
-    position: center;
-
+    background-repeat: no-repeat;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 40px;
-    margin-left: 40px;
-    margin-bottom: 10px;
     background-color: #dddddd;
     border: 1px solid #555555;
+    margin-bottom: 20px;
+    margin-top: 10px;
 }
 
 .postAuthorContainer {
-    padding: 12px;
+    padding: 10px;
     color: #444444;
     font-family: "Roboto";
     width: 190px;
@@ -299,12 +305,17 @@ body {
 #postIndexContent {
     background-color: white;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.3);
-
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .postHeader {
     background-color: #888888;
     padding: 12px 0 12px 24px;
+}
+
+.postManageBar {
+    padding: 0px !important;
 }
 
 .btn-back {
@@ -376,12 +387,27 @@ body {
     margin-right: 20px;
 }
 
+.transparentButton {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none !important;
+    overflow: hidden;
+    outline: none !important;
+}
+
+.postManageButton {
+    color: #555555;
+}
+.postManageButton:hover{
+    color: #222222;
+}
+
 
 
 /* Forum index */
 
 #forumIndexTable td {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 #forumIndexTable tr:hover {
@@ -453,4 +479,15 @@ body {
 .replyContent {
     background-color: white;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.3);
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/*Reply*/
+.replyAuthorContainer {
+    padding: 10px;
+    color: #444444;
+    font-family: "Roboto";
+    width: 190px;
 }

@@ -1,74 +1,119 @@
 ﻿@model ForumProject.Models.PostModels.PostIndexModel
 
-    <div class="container body-content">
-        
-        
-    </div>
+<div class="container body-content">
+<ul>
+
+</ul>
 
 <div class="row" id="postIndexContent">
     <div class="col-md-3 postAuthorContainer">
         <div class="postAuthorImage" style="background-image: url(@Model.AuthorImageUrl);"></div>
-        <a asp-controller="Profile" asp-action="Detail" asp-route-id="@Model.AuthorId">
-            @Model.AuthorName
-        </a>
-        <span class="postData">
-            @Model.Created
-        </span>
+        <center>
+            <a asp-controller="Profile" asp-action="Detail" asp-route-id="@Model.AuthorId">
+                @Model.AuthorName
+            </a>
+        </center>
+        <center>
+            <span class="postDate">
+                @Model.Created
+            </span>
+        </center>
         @if (Model.IsAuthorAdmin)
         {
             <span class="isAdmin smaller">Admin</span>
         }
     </div>
-    <div class="col-md-9 postContentContainer">
+    <div class="col-md-8 postContentContainer">
         <div class="postContent">
             @Html.Raw(Model.PostContent)
         </div>
+
     </div>
+    <div class="col-md-1 postManageBar">
+        @if (User.Identity.IsAuthenticated)
+        {
+            @if (User.IsInRole("Admin") || User.Identity.Name == Model.AuthorName)
+            { 
+                <form asp-controller="Post" asp-action="ConfirmDelete" asp-route-id="@Model.Id">
+                    <button class="transparentButton postManageButton" type="submit" style="float:right;" onclick="return confirm('Are you sure you want to delete this post')">
+                        <i class="material-icons">delete</i>
+                    </button>
+                </form>
+                <button class="transparentButton postManageButton">
+                    <i class="material-icons">edit</i>
+                </button>
+            }
+        }
+        </div>
+
 </div>
-<div class="row" id="replyDivider"></div>
+    <div class="row" id="replyDivider"></div>
 
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="row">
-        <span>
-            <a asp-controller="Reply" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-newReply" style="margin-top: 10px; margin-bottom: 10px">
-                Post Reply
-            </a>
-        </span>
-    </div>
-}
-
-@if (Model.Replies.Any())
-{
-    foreach (var reply in Model.Replies)
+    @if (User.Identity.IsAuthenticated)
     {
-        <div class="row replyContent">
-            <div class="col-md-3 replyAuthorContainer">
-                <div class="postAuthorImage" style="background-image: url(@reply.AuthorImageUrl); background-size: 100%;"></div>
-                <a asp-controller="Profile" asp-action="Detail" asp-route-id="@reply.AuthorId">
-                    <strong>@reply.AuthorName</strong>
-                </a> (<span class="postAuthorRating">@reply.AuthorRating</span>) <br />
-                @if (@reply.IsAuthorAdmin)
-                {
-                    <div class="isAdmin profileLabel smaller">Admin</div>
-                    <br />
-                }
-                <span class="postDate">@reply.Created</span>
-            </div>
-            <div class="col-md-9 replyContentContainer">
-                <div class="postContent">
-                    @Html.Raw(@reply.ReplyContent)
-                </div>
-            </div>
+        <div class="row">
+            <span>
+                <a asp-controller="Reply" asp-action="Create" asp-route-PostId="@Model.Id" class="btn btn-newReply" style="margin-top: 20px;">
+                    Post Reply
+                </a>
+            </span>
         </div>
     }
-}
-else
-{
-    <div class="noPosts">
-        <h3>
-            There are no replies to this post <br/>
-        </h3>
-    </div>
-}
 
+    @if (Model.Replies.Any())
+    {
+        foreach (var reply in Model.Replies)
+        {
+            <div class="row replyContent">
+                <div class="col-md-3 replyAuthorContainer">
+                    <div class="postAuthorImage" style="background-image: url(@reply.AuthorImageUrl); background-size: 100%;"></div>
+                    <center>
+                        <a asp-controller="Profile" asp-action="Detail" asp-route-id="@reply.AuthorId">
+                            @reply.AuthorName
+                        </a> (<span class="postAuthorRating">@reply.AuthorRating</span>)
+                    </center>
+                    @if (@reply.IsAuthorAdmin)
+                    {
+                        <div class="isAdmin profileLabel smaller">Admin</div>
+                        <br />
+                    }
+                    <center>
+                        <span class="postDate">
+                            @reply.Created
+                        </span>
+                    </center>
+                </div>
+                <div class="col-md-8 replyContentContainer">
+                    <div class="postContent">
+                        @Html.Raw(@reply.ReplyContent)
+                    </div>
+                </div>
+                <div class="col-md-1 postManageBar">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("Admin") || User.Identity.Name == reply.AuthorName)
+                        { 
+                            <form asp-controller="Reply" asp-action="ConfirmDelete" asp-route-id="@reply.Id">
+                                <button class="transparentButton postManageButton" type="submit" style="float:right;" onclick="return confirm('Are you sure you want to delete this reply')">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </form>
+                            <button class="transparentButton postManageButton">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="noPosts">
+            <h3>
+                There are no replies to this post <br />
+            </h3>
+        </div>
+    }
+
+</div>

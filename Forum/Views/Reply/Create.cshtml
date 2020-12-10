@@ -1,43 +1,51 @@
 ﻿@model ForumProject.Models.ReplyModels.PostReplyModel
 
 <div class="container body-content">
-    <div class="row sectionHeader">
+    <div class="sectionHeader">
         <div class="sectionHeading">
             Reply | @Model.PostTitle
             <div class="forumLogo" style="background-image: url(@Model.ForumImageUrl); background-size:100%"></div>
             <span id="headingBtn">
-                <a asp-controller="Post" asp-action="Index" asp-route-id="@Model.PostId" class="btn btn-back">Back to Post</a>
+                <a asp-controller="Post" asp-action="Index" asp-route-id="@Model.PostId" class="btn btn-back" style="float:right">Back to Post</a>
             </span>
         </div>
     </div>
-    <div class="row">
-        <div id="postReply">
-            <h3>
-                @Model.PostTitle
-            </h3>
-            <p>
-                @Model.PostContent
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="createReplySection">
-            <div class="authorBlock">
-                You're submitting this Reply as <span class="authorBlockName">@Model.AuthorName</span>
+    
+    <div id="formBackgroundContainer">
+        <div class="row">
+            <label style="margin-top: 20px; margin-left: 15px;">Post Content: </label>
+            <div style="margin-top: 20px; margin-left: 40px;">
+                <p>
+                    @Model.PostContent
+                </p>
             </div>
-            <form asp-action="AddReply" method="post" id="addPostForm">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="ReplyContent">Post Content</label>
-                    <textarea asp-for="ReplyContent" rows="20" class="form-control" placeholder="Write your reply here."></textarea>
-                    <span asp-validation-for="ReplyContent" class="text-danger"></span>
-                </div>
-                <button type="submit" id="sybmitReplyBtn" class="btn btn-submitPost">Submit Reply</button>
-                <input asp-for="AuthorId" type="hidden" />
-                <input asp-for="PostId" type="hidden" />
-                <input asp-for="ForumName" type="hidden" />
-                <input asp-for="ForumId" type="hidden" />
-            </form>
         </div>
+        @if (Context.User.Identity.IsAuthenticated)
+        {
+            <div class="createReplySection">
+                <form asp-action="AddReply" method="post" id="addPostForm">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ReplyContent">Reply Content</label>
+                        <textarea asp-for="ReplyContent" rows="10" class="form-control" placeholder="Write your reply here."></textarea>
+                        <span asp-validation-for="ReplyContent" class="text-danger"></span>
+                    </div>
+                    <button type="submit" id="sybmitReplyBtn" class="btn btn-submitPost">Submit Reply</button>
+                    <input asp-for="AuthorId" type="hidden" />
+                    <input asp-for="PostId" type="hidden" />
+                    <input asp-for="ForumName" type="hidden" />
+                    <input asp-for="ForumId" type="hidden" />
+                </form>
+            </div>
+        }
+        else
+        {
+            <br />
+            <div class="register">
+                <span>
+                    You need to <a asp-area="Identity" asp-page="/Account/Register">Register</a> or <a asp-area="Identity" asp-page="/Account/Login">Login</a> to create a new post
+                </span>
+            </div>
+        }
     </div>
 </div>

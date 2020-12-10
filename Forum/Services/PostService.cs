@@ -29,9 +29,27 @@ namespace ForumProject.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task Delete(int id)
+        public async Task DeletePost(int id)
         {
-            throw new NotImplementedException();
+            var post = GetPostById(id);
+            _context.Remove(post);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ClearReplies(int id)
+        {
+
+            var post = GetPostById(id);
+            _context.RemoveRange(post.Replies);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteReply(int id)
+        {
+
+            var reply = GetReplyById(id);
+            _context.Remove(reply);
+            await _context.SaveChangesAsync();
         }
 
         public Task EditPostContent(int id, string newContent)
@@ -39,7 +57,7 @@ namespace ForumProject.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Post> GetAll()
+        public IEnumerable<Post> GetAllPosts()
         {
             return _context.Posts
                 .Include(post => post.User)
@@ -47,12 +65,20 @@ namespace ForumProject.Services
                 .Include(post => post.Forum);
         }
 
-        public Post GetById(int id)
+        public Post GetPostById(int id)
         {
             return _context.Posts.Where(post => post.Id == id)
                 .Include(post => post.User)
                 .Include(post => post.Replies).ThenInclude(reply => reply.User)
                 .Include(post => post.Forum)
+                .First();
+        }
+
+        public PostReply GetReplyById(int id)
+        {
+            return _context.PostReplies.Where(reply => reply.Id == id)
+                .Include(reply => reply.User)
+                .Include(reply => reply.Post).ThenInclude(reply => reply.Forum)
                 .First();
         }
 
@@ -63,7 +89,7 @@ namespace ForumProject.Services
 
         public IEnumerable<Post> GetLatestPosts(int n)
         {
-            return GetAll().OrderByDescending(post => post.Created).Take(n);
+            return GetAllPosts().OrderByDescending(post => post.Created).Take(n);
         }
 
         public IEnumerable<Post> GetPostsByForum(int id)
