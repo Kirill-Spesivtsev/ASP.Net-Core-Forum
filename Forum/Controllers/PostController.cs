@@ -60,6 +60,7 @@ namespace ForumProject.Controllers
                 ForumImageUrl = forum.ImageUrl,
                 AuthorName = User.Identity.Name
             };
+            
             return View("Create", model);
         }
 
@@ -72,12 +73,41 @@ namespace ForumProject.Controllers
                 var user = _userManager.FindByIdAsync(userId).Result;
                 var post = BuildPost(model, user);
                 model.ForumName = post.Forum.Title;
-             
-                await _postService.Add(post);
+                post.User.Rating++;
+                await _postService.AddPost(post);
                 return RedirectToAction("Index", "Post", new {id = post.Id });
             }
             return Create(model.ForumId);
         }
+
+        public IActionResult Edit(int postId)
+        {
+            var post = _postService.GetPostById(postId);
+            var forum = _forumService.GetById(post.Forum.Id);
+            var model = new NewPostModel
+            {
+                Title = post.Title,
+                Content = post.Content,
+                Id = postId,
+                ForumName = forum.Title,
+                ForumId = forum.Id,
+                ForumImageUrl = forum.ImageUrl
+            };
+
+            return View("Edit", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPost(NewPostModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _postService.EditPost(model.Id, model.Title, model.Content);
+                return RedirectToAction("Index", "Post", new { id = model.Id });
+            }
+            return Edit(model.Id);
+        }
+
 
 
         [HttpPost]

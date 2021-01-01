@@ -17,7 +17,7 @@ namespace ForumProject.Services
             _context = context;
         }
 
-        public async Task Add(Post post)
+        public async Task AddPost(Post post)
         {
             _context.Add(post);
             await _context.SaveChangesAsync();
@@ -33,6 +33,23 @@ namespace ForumProject.Services
         {
             var post = GetPostById(id);
             _context.Remove(post);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task EditPost(int id, string title, string content) 
+        {
+            var post = GetPostById(id);
+            post.Title = title;
+            post.Content = content;
+            _context.Posts.Update(post);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task EditReply(int id, string content)
+        {
+            var reply = GetReplyById(id);
+            reply.Content = content;
+            _context.PostReplies.Update(reply);
             await _context.SaveChangesAsync();
         }
 
@@ -52,10 +69,6 @@ namespace ForumProject.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task EditPostContent(int id, string newContent)
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerable<Post> GetAllPosts()
         {

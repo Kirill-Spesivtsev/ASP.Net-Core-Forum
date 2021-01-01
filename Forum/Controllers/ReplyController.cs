@@ -57,12 +57,44 @@ namespace ForumProject.Controllers
                 var user = await _userManager.FindByIdAsync(userId);
                 var reply = BuildReply(model, user);
                 model.ForumName = reply.Post.Forum.Title;
+                reply.User.Rating++;
                 await _postService.AddReply(reply);
                 return RedirectToAction("Index", "Post", new { id = model.PostId });
             }
 
             return await Create(model.PostId);
         }
+
+        public IActionResult Edit(int replyId)
+        {
+            var reply = _postService.GetReplyById(replyId);
+            var forum = reply.Post.Forum;
+            var model = new PostReplyModel
+            {
+                ReplyContent = reply.Content,
+                PostId = reply.Post.Id,
+                Id = replyId,
+                PostTitle = reply.Post.Title,
+                PostContent = reply.Post.Content,
+                ForumId = forum.Id,
+                ForumImageUrl = forum.ImageUrl
+            };
+
+            return View("Edit", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditReply(PostReplyModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _postService.EditReply(model.Id, model.ReplyContent);
+                return RedirectToAction("Index", "Post", new { id = model.PostId });
+            }
+            return Edit(model.Id);
+        }
+
+
 
         [HttpPost]
         public async Task<IActionResult> ConfirmDelete(int id)

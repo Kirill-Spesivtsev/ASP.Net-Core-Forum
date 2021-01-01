@@ -3,7 +3,7 @@
 <div class="container body-content">
     <div class="sectionHeader">
         <div class="sectionHeading">
-            New Reply | @Model.PostTitle
+            Edit Reply | @Model.PostTitle
             <div class="forumLogo" style="background-image: url(@Model.ForumImageUrl); background-size:100%"></div>
             <span id="headingBtn">
                 <a asp-controller="Post" asp-action="Index" asp-route-id="@Model.PostId" class="btn btn-back" style="float:right">Back to Post</a>
@@ -23,7 +23,7 @@
         @if (Context.User.Identity.IsAuthenticated)
         {
             <div class="createReplySection">
-                <form asp-action="AddReply" method="post" id="addPostForm">
+                <form asp-action="EditReply" method="post" id="addPostForm">
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="ReplyContent">Reply Content</label>
@@ -33,8 +33,7 @@
                     <button type="submit" id="sybmitReplyBtn" class="btn btn-submitPost">Submit Reply</button>
                     <input asp-for="AuthorId" type="hidden" />
                     <input asp-for="PostId" type="hidden" />
-                    <input asp-for="ForumName" type="hidden" />
-                    <input asp-for="ForumId" type="hidden" />
+                    <input asp-for="Id" type="hidden" />
                 </form>
             </div>
         }

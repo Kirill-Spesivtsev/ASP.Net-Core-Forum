@@ -8,6 +8,7 @@ namespace ForumProject.Models.PostModels
 {
     public class NewPostModel
     {
+        public int Id { get; set; }
         public string ForumName { get; set; }
         public int ForumId { get; set; }
         public string AuthorName { get; set; }

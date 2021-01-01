@@ -16,11 +16,12 @@ namespace ForumProject.Data
 
         Post GetPostById(int id);
         PostReply GetReplyById(int id);
-        Task Add(Post post);
+        Task AddPost(Post post);
+        Task EditPost(int id, string title, string content);
+        Task EditReply(int id, string content);
         Task DeletePost(int id);
         Task DeleteReply(int id);
         Task ClearReplies(int id);
-        Task EditPostContent(int id, string newContent);
         Task AddReply(PostReply reply);
 
         

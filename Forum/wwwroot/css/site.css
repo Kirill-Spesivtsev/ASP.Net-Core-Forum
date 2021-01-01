@@ -110,7 +110,7 @@ body {
 }
 
 #formBackgroundContainer {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 10px;
 }
 
@@ -314,8 +314,14 @@ body {
     padding: 12px 0 12px 24px;
 }
 
-.postManageBar {
+.postManageSection {
     padding: 0px !important;
+}
+
+.postManageBar {
+    display: inline-flex;
+    grid-column-gap: 10px;
+    float: right;
 }
 
 .btn-back {
@@ -396,10 +402,10 @@ body {
 }
 
 .postManageButton {
-    color: #555555;
+    color: #b0b0b0;
 }
 .postManageButton:hover{
-    color: #222222;
+    color: #555555;
 }
 
 
