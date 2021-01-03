@@ -3,7 +3,7 @@
 <div class="container body-content">
     <div class="sectionHeader">
         <div class="sectionHeading">
-            <div id="results" style="margin-bottom:30px; margin-left:20px">
+            <div id="results" class="mainCaption" style="margin-bottom:20px; margin-left:20px">
                 @Model.Forum.Name Forum
             </div>
             
@@ -19,7 +19,7 @@
             </form>
             @if (Context.User.Identity.IsAuthenticated)
             {
-                <span id="headingBtn">
+                <span id="headingBtn" style="margin-top: 35px">
                     <a asp-controller="Post" asp-action="Create" asp-route-forumId="@Model.Forum.Id" class="btn btn-newPost">Create Post</a>
                 </span>
             }

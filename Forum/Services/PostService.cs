@@ -95,9 +95,32 @@ namespace ForumProject.Services
                 .First();
         }
 
-        public IEnumerable<Post> GetFilteredPost(string searchQuery)
+        public IEnumerable<Post> GetFilteredPosts(int id, string searchQuery)
         {
-            throw new NotImplementedException();
+            var forum = _context.Forums.Find(id);
+            if (!String.IsNullOrWhiteSpace(searchQuery))
+            {
+                return forum.Posts.Where(post => post.Title.Contains(searchQuery)
+                    || post.Content.Contains(searchQuery));
+            }
+            else 
+            {
+                return forum.Posts;
+            }
+        }
+
+        public IEnumerable<Post> GetFilteredPosts(Forum forum, string searchQuery)
+        {
+            
+            if (!String.IsNullOrWhiteSpace(searchQuery))
+            {
+                return forum.Posts.Where(post => post.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)
+                    || post.Content.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+            }
+            else
+            {
+                return forum.Posts;
+            }
         }
 
         public IEnumerable<Post> GetLatestPosts(int n)

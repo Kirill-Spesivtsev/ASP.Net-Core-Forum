@@ -116,6 +116,12 @@ body {
 
 /*Main Page*/
 
+.mainCaption {
+    color: black;
+    font-size: 1.3em;
+    font-family: "Roboto";
+}
+
 .sectionHeader {
     background-color: #e4e4e4;
     padding: 8px 0 24px 24px;
@@ -219,17 +225,21 @@ body {
 .searchBar {
     padding: 3px 5px 2px 12px;
     margin: 8px;
-    background-color: #999999;
+    background-color: #bbbbbb;
     width: 60%;
     transition: ease 0.2s;
     border: none;
+    border-radius: 10px
 }
 
-.searchBar:focus {
-    color: black;
-    width: 60%;
-    background-color: white;
-}
+    .searchBar:focus {
+        outline: none;
+        color: black;
+        width: 60%;
+        border: none;
+        border-radius: 10px;
+        background-color: white;
+    }
 
 /*Post Page*/
 
