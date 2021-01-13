@@ -43,12 +43,14 @@ namespace ForumProject.Controllers
                 PostRating = post.Rating,
                 ForumId = post.Forum.Id,
                 ForumName = post.Forum.Title,
-                IsAuthorAdmin = IsAuthorAdmin(post.User)
+                IsAuthorAdmin = IsAuthorAdmin(post.User),
             };
 
             return View(model);
         }
 
+        
+        
         
         public IActionResult Create(int forumId)
         {

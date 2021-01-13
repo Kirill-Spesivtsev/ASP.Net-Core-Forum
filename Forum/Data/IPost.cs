@@ -10,8 +10,9 @@ namespace ForumProject.Data
     {
         
         IEnumerable<Post> GetAllPosts();
-        IEnumerable<Post> GetFilteredPosts(int forumid, string searchQuery);
+        IEnumerable<Post> GetFilteredPosts(int forumId, string searchQuery);
         IEnumerable<Post> GetFilteredPosts(Forum forum, string searchQuery);
+        IEnumerable<Post> GetFilteredPosts(string searchQuery);
         IEnumerable<Post> GetPostsByForum(int id);
         IEnumerable<Post> GetLatestPosts(int n);
 

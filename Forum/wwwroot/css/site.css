@@ -114,6 +114,12 @@ body {
     padding: 10px;
 }
 
+.bodyBlock {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+
 /*Main Page*/
 
 .mainCaption {
@@ -199,7 +205,8 @@ body {
     .homeSearch:focus {
         outline: none !important;
         transition: ease-in 0.2s;
-        color: #03a9f4;
+        /*color: #03a9f4;*/
+        color: coral;
         height: 1.6em;
         background-color: rgba(255, 255, 255, 0.7);
         /*box-shadow: 0 5px 4px -6px #000000;*/
@@ -506,4 +513,9 @@ body {
     color: #444444;
     font-family: "Roboto";
     width: 190px;
+}
+
+/*Search*/
+#searchIndexTable td {
+    background-color: rgba(255, 255, 255, 0.8);
 }

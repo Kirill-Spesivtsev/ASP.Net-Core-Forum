@@ -1,54 +1,33 @@
-﻿@model ForumProject.Models.ForumModels.ForumTopicModel
+﻿@model ForumProject.Models.SearchModels.SearchResultModel
 
 <div class="container body-content">
     <div class="sectionHeader bodyBlock">
         <div class="sectionHeading">
             <div id="results" class="mainCaption" style="margin-bottom:20px; margin-left:20px">
-                @Model.Forum.Name Forum
+                Search results for: @Model.SearchQuery
             </div>
-            
 
-            <form asp-controller="Forum" asp-action="Search" method="post">
+
+            <form asp-controller="Search" asp-action="Search" method="post">
                 <div class="searchForm">
                     <input asp-for="SearchQuery" class="searchBar" type="text" autocomplete="off" placeholder="Search..." onfocus="clearThis(this)">
                     <button type="submit" class="btn buttonSearch">
                         <i class="material-icons">search</i>
                     </button>
                 </div>
-                <input asp-for="Forum.Id" name="id" type="hidden" />
             </form>
-            @if (Context.User.Identity.IsAuthenticated)
-            {
-                <span id="headingBtn" style="margin-top: 35px">
-                    <a asp-controller="Post" asp-action="Create" asp-route-forumId="@Model.Forum.Id" class="btn btn-newPost">Create Post</a>
-                </span>
-            }
-        </div>
-        <div class="sectionDescription">
-            <div class="forumLogo" style="background-image: url(@Model.Forum.ImageUrl); background-size:100%"></div>
-            <p>Welcome to the <strong>@Model.Forum.Name</strong> forum.</p>
-            <p>
-                @if (!Context.User.Identity.IsAuthenticated)
-                {
-                    <br />
-                    <div class="register">
-                        <span>
-                            You need to <a asp-area="Identity" asp-page="/Account/Register">Register</a> or <a asp-area="Identity" asp-page="/Account/Login">Login</a> to create a new post
-                        </span>
-                    </div>
-                }
-            </p>
         </div>
     </div>
     <div class="row" id="forumIndexContent">
-        @if (Model.Posts.Any())
+        @if (!Model.IsResultEmpty)
         {
-            <table class="table table-hover table-bordered" id="forumIndexTable">
+            <table class="table table-hover table-bordered" id="searchIndexTable">
                 <tbody>
                     @foreach (var post in Model.Posts)
                     {
                         <tr>
                             <td>
+                                <div class="forumLogo" style="background-image: url(@post.Forum.ImageUrl)"></div>
                                 <div class="postData">
                                     <div class="postTitle">
                                         <a asp-controller="Post" asp-action="Index" asp-route-id="@post.Id">@post.Title</a>
@@ -58,10 +37,16 @@
                                             <span class="postAuthor">
                                                 <a asp-controller="Profile" asp-action="Detail" asp-route-id="@post.AuthorId">
                                                     @post.AuthorName
-                                                </a>
-                                                (@post.AuthorRating)
+                                                </a>(@post.AuthorRating)
                                             </span>
-                                            <!--<span class="postDate">@post.DatePosted</span>-->
+                                                 in 
+                                            <span>
+                                                <span class="postForum">
+                                                    <a asp-controller="Forum" asp-action="Topic" asp-route-id="@post.Forum.Id">
+                                                        @post.Forum.Name
+                                                    </a>
+                                                </span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -79,21 +64,20 @@
                 </tbody>
             </table>
         }
-        else 
+        else
         {
             <div></div>
             <div class="noPosts">
                 <i class="material-icons md-72">question_answer</i>
                 <h3>
-                    It looks like there are no @Model.Forum.Name posts yet. <br />
-                    Why not <a asp-controller="Post" asp-action="Create" asp-route-id="@Model.Forum.Id"><span>Create One?</span></a>
+                    It looks like there are no posts for @Model.SearchQuery <br/>
                 </h3>
             </div>
         }
     </div>
 </div>
 
-@section Scripts 
+@section Scripts
 {
     <script>
         function clearThis(target) {
