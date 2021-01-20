@@ -1,10 +1,10 @@
-﻿using ForumProject.Models.PostModels;
+﻿using ForumProject.ViewModels.PostModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumProject.Models.SearchModels
+namespace ForumProject.ViewModels.SearchModels
 {
     public class SearchResultModel
     {

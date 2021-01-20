@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumProject.Models.PostModels
+namespace ForumProject.ViewModels.PostModels
 {
     public class NewPostModel
     {

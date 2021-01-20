@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using ForumProject.Data;
-using ForumProject.Models.ReplyModels;
-using ForumProject.Models.PostModels;
+using ForumProject.Interfaces;
+using ForumProject.ViewModels.ReplyModels;
+using ForumProject.ViewModels.PostModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using ForumProject.Models;
@@ -44,6 +44,7 @@ namespace ForumProject.Controllers
                 ForumId = post.Forum.Id,
                 ForumName = post.Forum.Title,
                 IsAuthorAdmin = IsAuthorAdmin(post.User),
+                
             };
 
             return View(model);

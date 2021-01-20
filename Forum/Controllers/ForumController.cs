@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ForumProject.Data;
+using ForumProject.Interfaces;
 using ForumProject.Models;
-using ForumProject.Models.ForumModels;
+using ForumProject.ViewModels.ForumModels;
 using Microsoft.CodeAnalysis.Operations;
-using ForumProject.Models.PostModels;
+using ForumProject.ViewModels.PostModels;
 
 namespace ForumProject.Controllers
 {

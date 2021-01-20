@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ForumProject.Services;
 using ForumProject.Models;
+using ForumProject.Interfaces;
 
 namespace ForumProject
 {

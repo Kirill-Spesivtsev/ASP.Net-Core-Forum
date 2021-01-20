@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ForumProject.Models;
-using ForumProject.Models.HomeModels;
-using ForumProject.Data;
-using ForumProject.Models.PostModels;
-using ForumProject.Models.ForumModels;
+using ForumProject.ViewModels.HomeModels;
+using ForumProject.Interfaces;
+using ForumProject.ViewModels.PostModels;
+using ForumProject.ViewModels.ForumModels;
 
 namespace ForumProject.Controllers
 {

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ForumProject.Data;
+using ForumProject.Interfaces;
 using ForumProject.Models;
-using ForumProject.Models.ForumModels;
-using ForumProject.Models.PostModels;
-using ForumProject.Models.SearchModels;
+using ForumProject.ViewModels.ForumModels;
+using ForumProject.ViewModels.PostModels;
+using ForumProject.ViewModels.SearchModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForumProject.Controllers

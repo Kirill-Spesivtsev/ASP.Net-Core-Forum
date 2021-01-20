@@ -1,10 +1,10 @@
-﻿using ForumProject.Models.PostModels;
+﻿using ForumProject.ViewModels.PostModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumProject.Models.ForumModels
+namespace ForumProject.ViewModels.ForumModels
 {
     public class ForumTopicModel
     {

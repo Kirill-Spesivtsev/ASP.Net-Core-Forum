@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ForumProject.Data;
+using ForumProject.Interfaces;
 using ForumProject.Models;
-using ForumProject.Models.ReplyModels;
+using ForumProject.ViewModels.ReplyModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

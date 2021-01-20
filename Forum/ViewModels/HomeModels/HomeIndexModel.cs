@@ -1,10 +1,10 @@
-﻿using ForumProject.Models.PostModels;
+﻿using ForumProject.ViewModels.PostModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ForumProject.Models.HomeModels
+namespace ForumProject.ViewModels.HomeModels
 {
     public class HomeIndexModel
     {
