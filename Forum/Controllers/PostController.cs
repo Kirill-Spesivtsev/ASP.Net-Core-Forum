@@ -50,9 +50,7 @@ namespace ForumProject.Controllers
             return View(model);
         }
 
-        
-        
-        
+
         public IActionResult Create(int forumId)
         {
             var forum = _forumService.GetById(forumId);

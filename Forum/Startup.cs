@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using ForumProject.Services;
 using ForumProject.Models;
 using ForumProject.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ForumProject
 {
@@ -39,8 +41,6 @@ namespace ForumProject
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            
-
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -54,7 +54,19 @@ namespace ForumProject
             services.AddRazorPages();
             services.AddScoped<IForum, ForumService>();
             services.AddScoped<IPost, PostService>();
-            services.AddMvc();
+
+            services.AddOptions();//Ip rate limiting + app settings
+            services.AddMemoryCache();
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+            services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
+            services.AddInMemoryRateLimiting();
+            services.AddDistributedRateLimiting<AsyncKeyLockProcessingStrategy>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+            services.AddMvc(options=>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +83,9 @@ namespace ForumProject
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseIpRateLimiting();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -79,6 +94,34 @@ namespace ForumProject
             app.UseAuthentication();
             app.UseAuthorization();
             
+            //Security policy
+            app.UseCsp(options =>
+            {
+                options.BlockAllMixedContent()
+                    .ScriptSources(s => s.Self())
+
+                    .StyleSources(s => s.Self()
+                            .CustomSources("fonts.googleapis.com", "site.css").UnsafeInline())
+                    .FontSources(s => s.Self().CustomSources("fonts.gstatic.com"))
+                    .FormActions(s => s.Self())
+                    .FrameAncestors(s => s.Self())
+                    .FrameSources(s => s.Self())
+                    .ImageSources(s => s.Self());
+            });
+            app.UseXfo(option =>
+            {
+                option.Deny();
+            });
+            app.UseXXssProtection(option =>
+            {
+                option.EnabledWithBlockMode();
+            });
+            app.UseXContentTypeOptions();
+            app.UseReferrerPolicy(opts => opts.NoReferrer());
+            app.UseHsts();
+            app.UseRedirectValidation(s => s.AllowSameHostRedirectsToHttps());
+            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

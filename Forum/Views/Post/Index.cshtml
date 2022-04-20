@@ -56,12 +56,12 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="row">
-            <span>
+            <div class="container">
                 <a asp-controller="Reply" asp-action="Create" asp-route-PostId="@Model.Id" 
                    class="btn btn-newReply" style="margin-top: 20px;">
                     Post Reply
                 </a>
-            </span>
+            </div>
         </div>
     }
 
