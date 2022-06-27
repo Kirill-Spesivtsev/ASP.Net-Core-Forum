@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ForumProject.Interfaces;
 using ForumProject.Models;
 using ForumProject.ViewModels.ApplicationUserModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +41,12 @@ namespace ForumProject.Controllers
                 IsAdmin = userRoles.Contains("Admin")
             };
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UplosaProfileImage(IFormFile file)
+        {
+            var userId = _userManager.GetUserId(User);
         }
     }
 }

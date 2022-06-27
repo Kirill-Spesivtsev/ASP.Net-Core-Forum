@@ -41,6 +41,7 @@ namespace ForumProject
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -54,6 +55,8 @@ namespace ForumProject
             services.AddRazorPages();
             services.AddScoped<IForum, ForumService>();
             services.AddScoped<IPost, PostService>();
+            services.AddScoped<IApplicationUser, ApplicationUserService>();
+            services.AddSingleton<IUpload, UploadService>();
 
             services.AddOptions();//Ip rate limiting + app settings
             services.AddMemoryCache();
@@ -62,11 +65,12 @@ namespace ForumProject
             services.AddInMemoryRateLimiting();
             services.AddDistributedRateLimiting<AsyncKeyLockProcessingStrategy>();
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-
+            
             services.AddMvc(options=>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,7 +122,6 @@ namespace ForumProject
             });
             app.UseXContentTypeOptions();
             app.UseReferrerPolicy(opts => opts.NoReferrer());
-            app.UseHsts();
             app.UseRedirectValidation(s => s.AllowSameHostRedirectsToHttps());
             
 

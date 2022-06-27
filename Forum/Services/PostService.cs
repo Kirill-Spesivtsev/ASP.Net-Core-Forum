@@ -137,9 +137,10 @@ namespace ForumProject.Services
 
         public IEnumerable<Post> GetFilteredPosts(string searchQuery)
         {
+            searchQuery ??= "";
             return GetAllPosts().Where(post => post.Title.Contains(
                 searchQuery, StringComparison.OrdinalIgnoreCase)
-                || post.Content.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+                || post.Content.Contains(searchQuery ?? "", StringComparison.OrdinalIgnoreCase));
         }
     }
 }
