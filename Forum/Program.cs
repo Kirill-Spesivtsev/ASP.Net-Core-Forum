@@ -18,6 +18,11 @@ namespace ForumProject
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    var env = builderContext.HostingEnvironment;
+                    config.AddJsonFile("cloudStorageSettings.json", optional: false, reloadOnChange: true);
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

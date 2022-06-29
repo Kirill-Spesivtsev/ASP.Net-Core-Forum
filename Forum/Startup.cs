@@ -52,6 +52,7 @@ namespace ForumProject
                 options.Password.RequiredUniqueChars = 1;
             });
             services.AddControllersWithViews();
+
             services.AddRazorPages();
             services.AddScoped<IForum, ForumService>();
             services.AddScoped<IPost, PostService>();
@@ -103,14 +104,14 @@ namespace ForumProject
             {
                 options.BlockAllMixedContent()
                     .ScriptSources(s => s.Self())
-
                     .StyleSources(s => s.Self()
                             .CustomSources("fonts.googleapis.com", "site.css").UnsafeInline())
                     .FontSources(s => s.Self().CustomSources("fonts.gstatic.com"))
                     .FormActions(s => s.Self())
                     .FrameAncestors(s => s.Self())
                     .FrameSources(s => s.Self())
-                    .ImageSources(s => s.Self());
+                    .ImageSources(s => s.Self().
+                        CustomSources("forumproject.blob.core.windows.net"));
             });
             app.UseXfo(option =>
             {
